@@ -54,8 +54,7 @@
     "lint": "eslint src --ext .ts --ignore-path .gitignore",
     "build": "del-cli lib && tsc",
     "prepublishOnly": "npm run build",
-    "postversion": "git push --follow-tags && npm publish",
-    "prepare": "husky install"
+    "postversion": "git push --follow-tags && npm publish"
   },
   "dependencies": {
     "steno": "^4.0.2",
@@ -73,7 +72,6 @@
     "del-cli": "^5.1.0",
     "eslint": "^8.56.0",
     "express-async-handler": "^1.2.0",
-    "husky": "^8.0.3",
     "lodash": "^4.17.21",
     "tempy": "^3.1.0",
     "ts-node": "^10.9.2",
