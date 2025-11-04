@@ -2,6 +2,10 @@ import { PathLike } from 'node:fs'
 
 import { Memory, MemorySync } from '../adapters/Memory.js'
 import { JSONFile, JSONFileSync } from '../adapters/node/JSONFile.js'
+import {
+  SuperJSONFile,
+  SuperJSONFileSync,
+} from '../adapters/node/SuperJSONFile.js'
 import { Low, LowSync } from '../core/Low.js'
 
 export async function JSONFilePreset<Data>(
@@ -25,6 +29,32 @@ export function JSONFileSyncPreset<Data>(
     process.env.NODE_ENV === 'test'
       ? new MemorySync<Data>()
       : new JSONFileSync<Data>(filename)
+  const db = new LowSync<Data>(adapter, defaultData)
+  db.read()
+  return db
+}
+
+export async function SuperJSONFilePreset<Data>(
+  filename: PathLike,
+  defaultData: Data,
+): Promise<Low<Data>> {
+  const adapter =
+    process.env.NODE_ENV === 'test'
+      ? new Memory<Data>()
+      : new SuperJSONFile<Data>(filename)
+  const db = new Low<Data>(adapter, defaultData)
+  await db.read()
+  return db
+}
+
+export function SuperJSONFileSyncPreset<Data>(
+  filename: PathLike,
+  defaultData: Data,
+): LowSync<Data> {
+  const adapter =
+    process.env.NODE_ENV === 'test'
+      ? new MemorySync<Data>()
+      : new SuperJSONFileSync<Data>(filename)
   const db = new LowSync<Data>(adapter, defaultData)
   db.read()
   return db
